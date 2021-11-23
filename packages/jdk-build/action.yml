@@ -1,0 +1,41 @@
+name: 'Maven build'
+description: 'Build maven project'
+inputs:
+  jdk-version:
+    description: 'The jdk version to use'
+    default: '15'
+    required: false
+  jdk-distribution:
+    description: 'The jdk distribution to use'
+    default: 'adopt'
+    required: false
+  mvn-args:
+    description: 'Additional maven arguments'
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: ${{ inputs.jdk-version }}
+        distribution: ${{ inputs.jdk-distribution }}
+
+    - name: Cache local Maven repository
+      id: mvn-cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - shell: bash
+      run: |
+        echo "RBK_REPOSITORY_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+        echo "RBK_REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+        echo "RBK_DOCKER_REGISTRY=registry.hub.docker.com" >> $GITHUB_ENV
+
+    - shell: bash
+      run: mvn -B clean compile package -Ddockerfile.registry=https://${RBK_DOCKER_REGISTRY} ${{ inputs.mvn-args }}
