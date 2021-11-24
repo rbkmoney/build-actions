@@ -694,9 +694,9 @@
   version "2.4.2"
   resolved "https://registry.npmjs.org/@types/prettier/-/prettier-2.4.2.tgz"
 
-"@types/ramda@^0.27.30":
-  version "0.27.50"
-  resolved "https://registry.npmjs.org/@types/ramda/-/ramda-0.27.50.tgz"
+"@types/ramda@^0.27.51":
+  version "0.27.51"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.27.51.tgz#d285a15cc57aa9d3d799bfec6920a65ed90e82b2"
   dependencies:
     ts-toolbelt "^6.15.1"
 
