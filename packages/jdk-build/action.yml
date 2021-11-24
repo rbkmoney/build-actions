@@ -33,9 +33,9 @@ runs:
 
     - shell: bash
       run: |
-        echo "RBK_REPOSITORY_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
-        echo "RBK_REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
-        echo "RBK_DOCKER_REGISTRY=registry.hub.docker.com" >> $GITHUB_ENV
+        echo "REPOSITORY_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+        echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+        echo "DOCKER_HUB_REGISTRY=registry.hub.docker.com" >> $GITHUB_ENV
 
     - shell: bash
-      run: mvn -B clean compile package -Ddockerfile.registry=https://${RBK_DOCKER_REGISTRY} ${{ inputs.mvn-args }}
+      run: mvn -B clean compile package -Ddockerfile.registry=https://${DOCKER_HUB_REGISTRY} ${{ inputs.mvn-args }}
