@@ -17,7 +17,8 @@ runs:
   steps:
     - shell: bash
       run: |
-        echo "IMAGE_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+        echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+        echo "IMAGE_NAME=${GITHUB_REPOSITORY_OWNER,,}/${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
 
     - shell: bash
       run: docker build -t "${IMAGE_NAME}:latest" -t "${IMAGE_NAME}:${GITHUB_SHA::8}" ${{inputs.dockerfile-path}}
@@ -26,4 +27,4 @@ runs:
       run: docker login -u ${{inputs.registry-username}} -p ${{inputs.registry-password}}
 
     - shell: bash
-      run: docker push --all-tags "${GITHUB_REPOSITORY_OWNER,,}/${GITHUB_REPOSITORY#*/}"
+      run: docker push --all-tags "${GITHUB_REPOSITORY_OWNER,,}/${REPOSITORY_NAME}"
