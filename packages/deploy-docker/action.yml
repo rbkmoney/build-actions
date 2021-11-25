@@ -7,7 +7,7 @@ inputs:
   registry-password:
     description: 'Password for image registry'
     required: true
-  dokerfile-path:
+  dockerfile-path:
     description: 'Path to dockerfile directory'
     required: false
     default: './target'
@@ -17,7 +17,7 @@ runs:
   steps:
     - shell: bash
       run: |
-        echo "IMAGE_NAME=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+        echo "IMAGE_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
 
     - shell: bash
       run: docker build -t "${IMAGE_NAME}:latest" -t "${IMAGE_NAME}:${GITHUB_SHA::8}" ${{inputs.dockerfile-path}}
